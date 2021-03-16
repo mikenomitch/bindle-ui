@@ -11,7 +11,7 @@ func Run() {
 	http.HandleFunc("/health", HandleHealth)
 
 	http.HandleFunc("/package", HandlePackage)
-	http.HandleFunc("/library", HandleLibrary)
+	http.HandleFunc("/catalog", HandleCatalog)
 
 	// TODO: MAKE THIS A POST
 	http.HandleFunc("/build", HandleBuild)

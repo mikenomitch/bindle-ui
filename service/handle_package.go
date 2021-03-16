@@ -26,12 +26,11 @@ type nomadResource struct {
 }
 
 type nomadVariables struct {
-	Variables []nomadVariable `hcl:"variable,block"`
+	Variables    []nomadVariable    `hcl:"variable,block"`
+	VariableSets []nomadVariableSet `hcl:"variable_set,block"`
 }
 
-type nomadVariableMeta struct {
-	Something string `hcl:something`
-}
+type nomadVariableMeta struct{}
 
 type nomadVariable struct {
 	Key         string            `hcl:"key,label"`
@@ -41,13 +40,20 @@ type nomadVariable struct {
 	Meta        nomadVariableMeta `hcl:"meta,block"`
 }
 
+type nomadVariableSet struct {
+	Key      string   `hcl:"key,label"`
+	Contents []string `hcl:"contents"`
+}
+
 type packageResponse struct {
-	Variables   []nomadVariable
-	PackageInfo []nomadResource
+	Variables    []nomadVariable
+	VariableSets []nomadVariableSet
+	PackageInfo  []nomadResource
 }
 
 func HandlePackage(w http.ResponseWriter, req *http.Request) {
 	header := w.Header()
+	header.Set("Access-Control-Allow-Origin", "*")
 	header.Set("Content-Type", "application/json")
 
 	query := req.URL.Query()
@@ -61,8 +67,9 @@ func HandlePackage(w http.ResponseWriter, req *http.Request) {
 	variables := getVariables(packageName)
 
 	res := packageResponse{
-		PackageInfo: resources.Resources,
-		Variables:   variables.Variables,
+		PackageInfo:  resources.Resources,
+		Variables:    variables.Variables,
+		VariableSets: variables.VariableSets,
 	}
 
 	// manifestBody
