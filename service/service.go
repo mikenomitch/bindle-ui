@@ -13,8 +13,7 @@ func Run() {
 	http.HandleFunc("/package", HandlePackage)
 	http.HandleFunc("/catalog", HandleCatalog)
 
-	// TODO: MAKE THIS A POST
-	http.HandleFunc("/build", HandleBuild)
+	http.HandleFunc("/deploy", HandleDeploy)
 
 	log.Println("Listing for requests at http://localhost:9000")
 	log.Fatal(http.ListenAndServe(":9000", nil))
