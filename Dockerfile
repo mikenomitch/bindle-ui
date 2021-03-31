@@ -1,7 +1,12 @@
-FROM golang:latest
+FROM golang
+
 WORKDIR /app
+
 COPY ./bindle-linux ./bin/bindle
+COPY ./nomad-linux ./bin/nomad
+
 ENV PATH="./bin:${PATH}"
+
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
