@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	cmd := exec.Command("./bindle", "init")
+	cmd := exec.Command("bindle", "init")
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
 	}
