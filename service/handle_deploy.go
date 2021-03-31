@@ -23,11 +23,6 @@ func HandleDeploy(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// data, err := ioutil.ReadAll(req.Body)
-	// asString := string(data)
-
-	// fmt.Println(asString)
-
 	decoder := json.NewDecoder(req.Body)
 
 	var dr DeployRequest
@@ -49,5 +44,4 @@ func HandleDeploy(w http.ResponseWriter, req *http.Request) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	_ = cmd.Run()
-
 }

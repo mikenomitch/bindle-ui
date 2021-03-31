@@ -6,7 +6,7 @@
 <ul>
   {{#each @model as |package|}}
     <li>
-      <LinkTo @route="package" @model={{package.Name}}>{{package.Name}}</LinkTo>
+      <LinkTo @route="package" @model={{package}}>{{package}}</LinkTo>
     </li>
   {{/each}}
 </ul>

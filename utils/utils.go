@@ -1,11 +1,20 @@
 package utils
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
+
+func Handle(err error, message string) {
+	if err != nil {
+		fmt.Println(message)
+		os.Exit(1)
+	}
+}
 
 func URLToFile(url, path string) error {
 	body, err := BodyFromURL(url)
@@ -60,4 +69,19 @@ func BufferFromURL(url string) ([]byte, error) {
 	}
 
 	return body, nil
+}
+
+func DirsInPath(path string) []string {
+	files, err := ioutil.ReadDir(path)
+	Handle(err, "Error reading catalogs")
+
+	var packages []string
+
+	for _, f := range files {
+		if f.IsDir() && !(strings.HasPrefix(f.Name(), ".")) {
+			packages = append(packages, f.Name())
+		}
+	}
+
+	return packages
 }

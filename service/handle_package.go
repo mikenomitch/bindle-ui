@@ -3,15 +3,15 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/hashicorp/hcl2/gohcl"
 	"github.com/hashicorp/hcl2/hclparse"
-	"github.com/mikenomitch/bindle-packager/utils"
 )
 
-const baseURL = "https://raw.githubusercontent.com/mikenomitch/nomad-packages/main/"
+const basePath = ".bindle/catalogs/default/"
 
 type nomadResources struct {
 	Resources []nomadResource `hcl:"nomad_resource,block"`
@@ -77,8 +77,8 @@ func HandlePackage(w http.ResponseWriter, req *http.Request) {
 }
 
 func getResources(packageName string) nomadResources {
-	manifestURL := baseURL + packageName + "/manifest.hcl"
-	bodyBuffer, _ := utils.BufferFromURL(manifestURL)
+	manifestPath := basePath + packageName + "/manifest.hcl"
+	bodyBuffer, _ := ioutil.ReadFile(manifestPath)
 
 	parser := hclparse.NewParser()
 	file, diags := parser.ParseHCL(bodyBuffer, "ignoreme")
@@ -92,8 +92,8 @@ func getResources(packageName string) nomadResources {
 }
 
 func getVariables(packageName string) nomadVariables {
-	varsURL := baseURL + packageName + "/variables.tf"
-	bodyBuffer, _ := utils.BufferFromURL(varsURL)
+	varsPath := basePath + packageName + "/variables.hcl"
+	bodyBuffer, _ := ioutil.ReadFile(varsPath)
 
 	parser := hclparse.NewParser()
 	file, diags := parser.ParseHCL(bodyBuffer, "ignoreme")
